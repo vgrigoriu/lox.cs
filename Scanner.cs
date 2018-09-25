@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace lox.cs
 {
@@ -36,7 +37,56 @@ namespace lox.cs
                 case '(':
                     AddToken(TokenType.LEFT_PAREN);
                     break;
+                case ')':
+                    AddToken(TokenType.RIGHT_PAREN);
+                    break;
+                case '{':
+                    AddToken(TokenType.LEFT_BRACE);
+                    break;
+                case '}':
+                    AddToken(TokenType.RIGHT_BRACE);
+                    break;
+                case ',':
+                    AddToken(TokenType.COMMA);
+                    break;
+                case '.':
+                    AddToken(TokenType.DOT);
+                    break;
+                case '-':
+                    AddToken(TokenType.MINUS);
+                    break;
+                case '+':
+                    AddToken(TokenType.PLUS);
+                    break;
+                case ';':
+                    AddToken(TokenType.SEMICOLON);
+                    break;
+                case '*':
+                    AddToken(TokenType.STAR);
+                    break;
+                case '!':
+                    AddToken(Match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
+                    break;
+                default:
+                    Lox.Error(line, "Unexpected character.");
+                    break;
             }
+        }
+
+        private bool Match(char expected)
+        {
+            if (IsAtEnd())
+            {
+                return false;
+            }
+
+            if (source[current] != expected)
+            {
+                return false;
+            }
+
+            current++;
+            return true;
         }
 
         private char Advance()
